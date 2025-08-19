@@ -1,0 +1,54 @@
+.link-image {
+  padding: 20px 0;
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.link-image input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.link-image input:focus {
+  border-color: #007bff; /* Highlight border on focus */
+}
+
+.link-image select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+.link-image select:focus {
+  border-color: #007bff; /* Highlight border on focus */
+}
+
+.link-image img {
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+
+.link-image__submit-button {
+  border: none; /* Removes the default border */
+  background-color: #007bff; /* A nice blue background */
+  color: white; /* White text */
+  padding: 10px 30px;
+  font-size: 14px;
+  border-radius: 10px; /* Makes the button rounded */
+  cursor: pointer; /* Changes cursor to a pointer on hover */
+  outline: none; /* Removes the outline on focus */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+}
+
+.link-image__submit-button:hover {
+  background-color: #0056b3; /* A darker blue on hover */
+}

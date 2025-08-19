@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import EditorJS from "@editorjs/editorjs";
 import type { OutputData } from "@editorjs/editorjs";
+import RawTool from "@editorjs/raw";
+import "./plugins/link-image/link-image.css";
+import { LinkImage } from "./plugins/link-image/link-image";
 
 function App() {
   const editorRef = useRef<EditorJS | null>(null);
@@ -14,18 +17,27 @@ function App() {
       editorRef.current = new EditorJS({
         holder: editorContainerRef.current,
         placeholder: "Start writing your content here...",
+        tools: {
+          html: {
+            class: RawTool,
+          },
+          linkimage: {
+            class: LinkImage,
+          },
+        },
         data: {
+          time: 1552744582955,
           blocks: [
             {
-              type: "paragraph",
+              type: "linkimage",
               data: {
-                text: "Welcome to Editor.js! This is a sample paragraph. Try editing this text or add new blocks below.",
+                url: "https://cdn.pixabay.com/photo/2017/09/01/21/53/blue-2705642_1280.jpg",
+                caption: "A beautiful blue image",
+                size: "LGL",
               },
             },
           ],
-        },
-        tools: {
-          // You can add more tools here as needed
+          version: "2.11.10",
         },
         onReady: () => {
           console.log("Editor.js is ready to work!");
@@ -70,21 +82,21 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100  p-4">
+    <div className="min-h-screen bg-gray-100 p-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-8 text-center">
+        <h1 className="text-4xl font-bold text-gray-800 mb-8 text-center">
           Editor.js Playground
         </h1>
 
         {/* Editor Container */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg mb-6">
+        <div className="bg-white rounded-lg shadow-lg mb-6">
           <div className="p-6">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
               Content Editor
             </h2>
             <div
               ref={editorContainerRef}
-              className="min-h-[300px] border border-gray-200 dark:border-gray-600 rounded-lg p-4"
+              className="min-h-[300px] border border-gray-200 rounded-lg p-4"
             />
           </div>
 
@@ -108,13 +120,13 @@ function App() {
 
         {/* JSON Output */}
         {savedData && (
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+          <div className="bg-white rounded-lg shadow-lg">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
                 Saved Content (JSON)
               </h2>
-              <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-auto max-h-96 text-sm">
-                <code className="text-gray-800 dark:text-gray-200">
+              <pre className="bg-gray-100 p-4 rounded-lg overflow-auto max-h-96 text-sm">
+                <code className="text-gray-800">
                   {JSON.stringify(savedData, null, 2)}
                 </code>
               </pre>

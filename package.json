@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/raw": "^2.5.1",
     "@tailwindcss/vite": "^4.1.12",
+    "editorjs-inline-image": "^2.2.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
