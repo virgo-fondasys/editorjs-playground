@@ -1,5 +1,10 @@
-import type { API, BlockToolConstructorOptions } from "@editorjs/editorjs";
+import type {
+  API,
+  BlockAPI,
+  BlockToolConstructorOptions,
+} from "@editorjs/editorjs";
 import { makeElement } from "./helper";
+import debounce from "lodash/debounce";
 
 interface LinkImageData {
   url: string;
@@ -7,7 +12,7 @@ interface LinkImageData {
   size: string;
 }
 
-export class LinkImage {
+export default class LinkImage {
   private _imageSizes: string[] = [
     "XS",
     "SM",
@@ -24,7 +29,9 @@ export class LinkImage {
 
   private api: API;
 
-  constructor({ data, api }: BlockToolConstructorOptions) {
+  private block: BlockAPI;
+
+  constructor({ data, api, block }: BlockToolConstructorOptions) {
     this._data = {
       url: data.url || "",
       caption: data.caption || "",
@@ -32,6 +39,7 @@ export class LinkImage {
     };
 
     this.api = api;
+    this.block = block;
 
     this._wrapper = undefined;
   }
@@ -56,19 +64,7 @@ export class LinkImage {
     return this._wrapper;
   }
 
-  save(wrapper: HTMLDivElement): LinkImageData {
-    const image = wrapper.querySelector("img") as HTMLImageElement;
-    const caption = wrapper.querySelector(
-      "#link-image__caption-input"
-    ) as HTMLInputElement;
-    const size = wrapper.querySelector(
-      "#link-image__size-input"
-    ) as HTMLSelectElement;
-
-    if (!image) {
-      return { url: "", caption: "", size: "" };
-    }
-
+  save(): LinkImageData {
     // Sanitize the caption to prevent XSS attacks
     // Only allow basic HTML tags like <b>, <i>, and <a> with href attribute
     const sanitizerConfig = {
@@ -79,15 +75,17 @@ export class LinkImage {
       i: true,
     };
 
-    return {
-      url: image.src || "",
-      caption: this.api.sanitizer.clean(caption?.value || "", sanitizerConfig),
-      size: size?.value || "",
-    };
+    this._data.caption = this.api.sanitizer.clean(
+      this._data.caption,
+      sanitizerConfig
+    );
+
+    return this._data;
   }
 
   validate(savedData: LinkImageData) {
     if (!savedData.url || savedData.url.trim() === "") {
+      console.error("Image URL is required.");
       return false;
     }
 
@@ -129,7 +127,10 @@ export class LinkImage {
     if (!this._wrapper) return;
 
     // create an image element
-    const img = makeElement<HTMLImageElement>("img", [], { src: url });
+    this._data.url = url;
+    const img = makeElement<HTMLImageElement>("img", [], {
+      src: url,
+    });
 
     const caption = makeElement<HTMLInputElement>("input", [], {
       id: "link-image__caption-input",
@@ -138,6 +139,29 @@ export class LinkImage {
       value: captionText,
     });
 
+    // Add event listener to update caption on input change but not on every keystroke update after a delay
+    caption.addEventListener("input", () => {
+      debounce(() => {
+        this._data.caption = caption.value;
+        this.block.dispatchChange();
+      }, 500)();
+    });
+
+    const selectSizes = this._createSizeSelector();
+    selectSizes.addEventListener("change", () => {
+      this._data.size = selectSizes.value;
+      this.block.dispatchChange();
+    });
+    selectSizes.value = size;
+
+    // append the image and caption to the wrapper
+    this._wrapper.innerHTML = ""; // clear previous content
+    this._wrapper.appendChild(img);
+    this._wrapper.appendChild(caption);
+    this._wrapper.appendChild(selectSizes);
+  }
+
+  private _createSizeSelector() {
     const selectSizes = makeElement<HTMLSelectElement>("select", [], {
       id: "link-image__size-input",
     });
@@ -158,12 +182,6 @@ export class LinkImage {
       selectSizes.appendChild(option);
     });
 
-    selectSizes.value = size;
-
-    // append the image and caption to the wrapper
-    this._wrapper.innerHTML = ""; // clear previous content
-    this._wrapper.appendChild(img);
-    this._wrapper.appendChild(caption);
-    this._wrapper.appendChild(selectSizes);
+    return selectSizes;
   }
 }

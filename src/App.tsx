@@ -3,7 +3,9 @@ import EditorJS from "@editorjs/editorjs";
 import type { OutputData } from "@editorjs/editorjs";
 import RawTool from "@editorjs/raw";
 import "./plugins/link-image/link-image.css";
-import { LinkImage } from "./plugins/link-image/link-image";
+import LinkImage from "./plugins/link-image/link-image";
+import isEqual from "lodash/isEqual";
+import SelectMenu from "./plugins/select/select";
 
 function App() {
   const editorRef = useRef<EditorJS | null>(null);
@@ -24,6 +26,9 @@ function App() {
           linkimage: {
             class: LinkImage,
           },
+          selectMenu: {
+            class: SelectMenu,
+          },
         },
         data: {
           time: 1552744582955,
@@ -41,6 +46,20 @@ function App() {
         },
         onReady: () => {
           console.log("Editor.js is ready to work!");
+        },
+        async onChange(api, event) {
+          console.log("Editor content changed:", event);
+          const result: EditorJS.OutputData = await api.saver.save();
+
+          if (!result || result.blocks.length < 1) {
+            return;
+          }
+
+          console.log("Saved content:", result);
+          if (!isEqual(savedData, result)) {
+            console.log("Old content:", savedData);
+            setSavedData(result);
+          }
         },
       });
     }
