@@ -33,7 +33,7 @@ function App() {
               data: {
                 url: "https://cdn.pixabay.com/photo/2017/09/01/21/53/blue-2705642_1280.jpg",
                 caption: "A beautiful blue image",
-                size: "LGL",
+                size: "LGL", // TODO: have a problem, the select default value is not working
               },
             },
           ],

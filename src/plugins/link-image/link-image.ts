@@ -39,7 +39,7 @@ export class LinkImage {
   static get toolbox() {
     return {
       title: "Link Image",
-      icon: '<svg width="12" height="12" viewBox="0 0 336 276" xmlns="http://www.w3.org/2000/svg"><path d="M291 150V79c0-19-15-34-34-34H79c-19 0-34 15-34 34v42l67-44 81 72 56-29 42 30zm0 52l-43-30-56 30-81-67-66 39v23c0 19 15 34 34 34h178c17 0 31-13 34-29zM79 0h178c44 0 79 35 79 79v118c0 44-35 79-79 79H79c-44 0-79-35-79-79V79C0 35 35 0 79 0z"/></svg>',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-link-icon lucide-link"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
     };
   }
 
@@ -47,11 +47,7 @@ export class LinkImage {
     this._wrapper = makeElement<HTMLDivElement>("div", ["link-image"]);
 
     if (this._data.url) {
-      this._showImage(
-        this._data.url,
-        this._data.caption || "",
-        this._data.size || ""
-      );
+      this._showImage(this._data.url, this._data.caption, this._data.size);
       return this._wrapper;
     }
 
@@ -131,7 +127,7 @@ export class LinkImage {
 
   private _showImage(url: string, captionText: string = "", size: string = "") {
     if (!this._wrapper) return;
-    console.log("Showing image:", url, captionText, size);
+
     // create an image element
     const img = makeElement<HTMLImageElement>("img", [], { src: url });
 
@@ -146,14 +142,23 @@ export class LinkImage {
       id: "link-image__size-input",
     });
 
+    // Default options for image sizes
+    const defaultOption = makeElement<HTMLOptionElement>("option", [], {
+      value: "",
+      disabled: true,
+    });
+    defaultOption.textContent = "Select The Image Size";
+    selectSizes.appendChild(defaultOption);
+
     this._imageSizes.forEach((sizes) => {
       const option = makeElement<HTMLOptionElement>("option", [], {
         value: sizes,
-        selected: size === sizes,
       });
       option.textContent = sizes;
       selectSizes.appendChild(option);
     });
+
+    selectSizes.value = size;
 
     // append the image and caption to the wrapper
     this._wrapper.innerHTML = ""; // clear previous content
