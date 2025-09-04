@@ -3,7 +3,7 @@ import type {
   BlockAPI,
   BlockToolConstructorOptions,
 } from "@editorjs/editorjs";
-import { makeElement } from "./helper";
+import { makeElement } from "../helper/helper";
 import debounce from "lodash/debounce";
 
 interface LinkImageData {

@@ -1,11 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import EditorJS from "@editorjs/editorjs";
-import type { OutputData } from "@editorjs/editorjs";
+import type { BlockMutationEvent, OutputData } from "@editorjs/editorjs";
 import RawTool from "@editorjs/raw";
 import "./plugins/link-image/link-image.css";
 import LinkImage from "./plugins/link-image/link-image";
 import isEqual from "lodash/isEqual";
-import SelectMenu from "./plugins/select/select";
+import "./plugins/shopping-card/shopping-card.css";
+import ShoppingCard from "./plugins/shopping-card/shopping-card";
+import Quote from "@editorjs/quote";
+import Header from "@editorjs/header";
+import Delimiter from "@editorjs/delimiter";
+import EditorjsList from "@editorjs/list";
+import AudioPlayer from "editorjs-audio-player";
+import Table from "@editorjs/table";
+import Strikethrough from "@sotaproject/strikethrough";
 
 function App() {
   const editorRef = useRef<EditorJS | null>(null);
@@ -26,28 +34,27 @@ function App() {
           linkimage: {
             class: LinkImage,
           },
-          selectMenu: {
-            class: SelectMenu,
+          shoppingCard: {
+            class: ShoppingCard,
           },
-        },
-        data: {
-          time: 1552744582955,
-          blocks: [
-            {
-              type: "linkimage",
-              data: {
-                url: "https://cdn.pixabay.com/photo/2017/09/01/21/53/blue-2705642_1280.jpg",
-                caption: "A beautiful blue image",
-                size: "LGL", // TODO: have a problem, the select default value is not working
-              },
+          quote: Quote,
+          header: Header,
+          delimiter: Delimiter,
+          list: {
+            class: EditorjsList,
+            inlineToolbar: true,
+            config: {
+              defaultStyle: "unordered",
             },
-          ],
-          version: "2.11.10",
+          },
+          audioPlayer: AudioPlayer,
+          table: Table,
+          strikethrough: Strikethrough,
         },
-        onReady: () => {
-          console.log("Editor.js is ready to work!");
-        },
-        async onChange(api, event) {
+        async onChange(
+          api: EditorJS.API,
+          event: BlockMutationEvent | BlockMutationEvent[]
+        ) {
           console.log("Editor content changed:", event);
           const result: EditorJS.OutputData = await api.saver.save();
 
@@ -62,6 +69,14 @@ function App() {
           }
         },
       });
+
+      editorRef.current.isReady
+        .then(() => {
+          console.log("Editor.js is ready to work!");
+        })
+        .catch((reason) => {
+          console.log(`Editor.js initialization failed because of ${reason}`);
+        });
     }
 
     // Cleanup function
@@ -71,7 +86,7 @@ function App() {
         editorRef.current = null;
       }
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSave = async () => {
     if (!editorRef.current) return;
@@ -98,6 +113,19 @@ function App() {
     } catch (error) {
       console.error("Clearing failed:", error);
     }
+  };
+
+  const handleCopyJson = () => {
+    if (!savedData) return;
+    const jsonStr = JSON.stringify(savedData, null, 2);
+    navigator.clipboard.writeText(jsonStr).then(
+      () => {
+        alert("JSON copied to clipboard!");
+      },
+      () => {
+        alert("Failed to copy JSON");
+      }
+    );
   };
 
   return (
@@ -134,9 +162,15 @@ function App() {
             >
               Clear Editor
             </button>
+            {/* Copy buttons */}
+            <button
+              onClick={handleCopyJson}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded transition-colors"
+            >
+              Copy Json
+            </button>
           </div>
         </div>
-
         {/* JSON Output */}
         {savedData && (
           <div className="bg-white rounded-lg shadow-lg">
@@ -153,6 +187,7 @@ function App() {
           </div>
         )}
       </div>
+      {/* Render the editor results */}
     </div>
   );
 }

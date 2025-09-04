@@ -1,0 +1,57 @@
+.shopping-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.shopping-card__input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.shopping-card__input-label {
+    color: #1f2937;
+    font-weight: 500;
+    flex-basis: 130px;
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
+.shopping-card__input {
+  width: 100%;
+      padding: 4px 9px;
+  border: 1px solid #d1d5db;
+  border-radius: 0.3rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  flex-grow: 1;
+}
+
+.shopping-card__input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+.shopping-card__input::placeholder {
+  color: #9ca3af;
+}
+
+.shopping-card__textarea {
+  align-items: flex-start;
+}
+
+.shopping-card__textarea .form-label {
+  padding-top: 0.75rem;
+}
+
+.shopping-card__card-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+  margin: 0 0 10px;
+}

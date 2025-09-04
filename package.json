@@ -10,9 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@editorjs/delimiter": "^1.4.2",
     "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/header": "^2.8.8",
+    "@editorjs/list": "^2.0.8",
+    "@editorjs/quote": "^2.7.6",
     "@editorjs/raw": "^2.5.1",
+    "@editorjs/table": "^2.4.5",
+    "@editorjs/underline": "^1.2.1",
+    "@furison-tech/editorjs-audio": "^0.0.1",
+    "@sotaproject/strikethrough": "^1.0.1",
     "@tailwindcss/vite": "^4.1.12",
+    "editorjs-audio-player": "^0.0.3",
     "editorjs-inline-image": "^2.2.2",
     "lodash": "^4.17.21",
     "react": "^19.1.1",
