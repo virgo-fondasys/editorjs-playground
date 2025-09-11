@@ -1,6 +1,6 @@
-@import "tailwindcss";
+/* @import "tailwindcss"; */
 
-@layer base {
+/* @layer base {
   h1 {
     @apply text-4xl font-normal leading-tight;
   }
@@ -19,4 +19,4 @@
   h6 {
     @apply text-sm font-semibold leading-snug uppercase tracking-wide;
   }
-}
+} */

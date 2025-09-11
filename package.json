@@ -12,6 +12,7 @@
   "dependencies": {
     "@editorjs/delimiter": "^1.4.2",
     "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/embed": "^2.7.6",
     "@editorjs/header": "^2.8.8",
     "@editorjs/list": "^2.0.8",
     "@editorjs/quote": "^2.7.6",
@@ -23,6 +24,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "editorjs-audio-player": "^0.0.3",
     "editorjs-inline-image": "^2.2.2",
+    "editorjs-text-alignment-blocktune": "^1.0.3",
     "lodash": "^4.17.21",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"

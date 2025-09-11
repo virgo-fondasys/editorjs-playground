@@ -14,6 +14,10 @@ import EditorjsList from "@editorjs/list";
 import AudioPlayer from "editorjs-audio-player";
 import Table from "@editorjs/table";
 import Strikethrough from "@sotaproject/strikethrough";
+import Underline from "@editorjs/underline";
+import Embed from "@editorjs/embed";
+import AlignmentTuneTool from "editorjs-text-alignment-blocktune";
+import CallToActionAlert from "./plugins/call-to-action-alert/call-to-action-alert";
 
 function App() {
   const editorRef = useRef<EditorJS | null>(null);
@@ -40,6 +44,17 @@ function App() {
           quote: Quote,
           header: Header,
           delimiter: Delimiter,
+          embedss: {
+            class: Embed,
+            inlineToolbar: true,
+            config: {
+              services: {
+                youtube: true, // Enable YouTube embeds
+                instagram: true, // Enable Instagram embeds
+                // Add other services as needed
+              },
+            },
+          },
           list: {
             class: EditorjsList,
             inlineToolbar: true,
@@ -50,6 +65,11 @@ function App() {
           audioPlayer: AudioPlayer,
           table: Table,
           strikethrough: Strikethrough,
+          underline: Underline,
+          alignmentTune: {
+            class: AlignmentTuneTool,
+          },
+          ctaAlert: CallToActionAlert,
         },
         async onChange(
           api: EditorJS.API,
