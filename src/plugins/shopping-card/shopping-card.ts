@@ -1,5 +1,5 @@
 import type { BlockToolConstructorOptions } from "@editorjs/editorjs";
-import { makeElement } from "../helper/helper";
+import { makeElement } from "../../helpers/helper";
 
 interface ShoppingCardData {
   title: string;
