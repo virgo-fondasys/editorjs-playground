@@ -173,7 +173,11 @@ app.post("/fetchUrl", async (req, res) => {
 
 // Health check endpoint
 app.get("/health", (req, res) => {
-  res.json({ status: "OK", message: "Server is running" });
+  // delay response by 2 seconds to simulate load
+  console.log("Health check request received", req.method, req.url, req.query);
+  return new Promise((resolve) => setTimeout(resolve, 2000)).then(() => {
+    res.json({ status: "OK", message: "Server is running" });
+  });
 });
 
 // Error handling middleware
